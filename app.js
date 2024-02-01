@@ -62,7 +62,7 @@ cardArray.sort(()=>0.5 - Math.random());
 const grid = document.querySelector('.grid');
 
 
-const result = document.querySelector('#result');
+const resultDisplay = document.querySelector('#result');
 let cardsChosen= [];
 let cardsChosenId=[];
 let pares=[];
@@ -73,8 +73,43 @@ function createBoard(){
         card.setAttribute('src','images/card.png');
         card.setAttribute('data-id',i);
         card.addEventListener('click', flipCard)
-      grid.append(card)
+      grid.appendChild(card)
     }
+}
+
+function checkForMatch(){
+    var cards = document.querySelectorAll('img');
+    const optionOneId = cardsChosenId[0];
+    const optionTwoId = cardsChosenId[1];
+
+        if(optionOneId ==optionTwoId){
+            cards[optionOneId].setAttribute('src','images/card.png')
+            cards[optionTwoId].setAttribute('src','images/card.png')
+            alert("Voce clicou na mesma imagem >:(");
+        }else if ( cardsChosen[0] == cardsChosen[1]){
+            alert ("Voce acertou um par :0")
+            cards[optionOneId].setAttribute('src','images/white.png')
+            cards[optionTwoId].setAttribute('src','images/white.png')
+            cards[optionOneId].removeEventListener('click', flipCard);
+            cards[optionTwoId].removeEventListener('click', flipCard);
+            pares.push(cardsChosen);
+        }else{
+            cards[optionOneId].setAttribute('src','images/card.png')
+            cards[optionTwoId].setAttribute('src','images/card.png')
+            alert("Tu errou, tente de novo :(");
+        }
+
+        cardsChosen=[];
+        cardsChosenId=[];
+        resultDisplay.textContent = pares.length;
+
+        if(pares.length == cardArray.length/2){
+            resultDisplay.textContent = "Paranbens vc acertou tudo!"
+        }
+
+
+
+
 }
 
 function flipCard(){
